@@ -49,6 +49,10 @@ form {
   @apply flex flex-col items-start gap-8 w-full;
 }
 
+.logout-btn{
+  background: linear-gradient(to right,#FF416C,#FF4B2B);
+}
+
 @layer components {
   .text-gradient {
     @apply bg-clip-text text-transparent bg-gradient-to-r from-[#AB8C95] via-[#000000] to-[#8E97C5];
@@ -59,6 +63,7 @@ form {
   .primary-button {
     @apply primary-gradient text-white rounded-full px-4 py-2 cursor-pointer w-full;
   }
+  
   .resume-nav {
     @apply flex flex-row justify-between items-center p-4 border-b border-gray-200;
   }
