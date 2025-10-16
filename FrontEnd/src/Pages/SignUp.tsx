@@ -1,5 +1,5 @@
 import React, { useState, type FormEvent } from 'react'
-import Input from '../Components/Input';
+import Input from '../ReuseableComponents/Input';
 import axios from 'axios';
 import toast, { Toaster } from 'react-hot-toast';
 import { useMutation } from '@tanstack/react-query';

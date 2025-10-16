@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import ScoreCircle from './ScroreCircle'
+import ScoreCircle from '../ReuseableComponents/ScroreCircle'
 
 const ResumeCard = ({ resume: { id, companyName, jobTitle, feedback ,imagePath} }: { resume: Resume }) => {
     return (

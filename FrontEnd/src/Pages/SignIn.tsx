@@ -1,5 +1,5 @@
 import React, { useState, type FormEvent, } from 'react'
-import Input from '../Components/Input';
+import Input from '../ReuseableComponents/Input';
 import axios from 'axios';
 import toast, { Toaster } from 'react-hot-toast';
 import { useMutation } from '@tanstack/react-query';
@@ -59,7 +59,7 @@ const SignIn = () => {
             <h1>Welcome Back</h1>
             <h2>Log in to continue you job journey</h2>
           </div>
-          <form onSubmit={handleSubmit} className='flex justify-center items-center '>
+          <form  onSubmit={handleSubmit} className='flex justify-center items-center '>
             <Input type='email' name='email' value={userData?.email} placeholder='Email' onChange={inputChange} />
             <Input type='password' name='password' value={userData?.password} placeholder='Password' onChange={inputChange} />
             <div>

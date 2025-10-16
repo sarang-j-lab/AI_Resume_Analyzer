@@ -6,6 +6,9 @@ import dotenv from 'dotenv'
 import bodyParser from 'body-parser';
 import cors from 'cors'
 import cookieParser from 'cookie-parser';
+import analyzeRouter from "./Routes/analyze.route.js"
+import multer from 'multer';
+import path from 'path'
 
 dotenv.config();
 const app = express();
@@ -21,8 +24,21 @@ app.get("/", (req, res) => {
     return res.send("hello world")
 })
 
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, "uploads/"); // directory to save uploaded files
+    },
+    filename: (req, file, cb) => {
+        const uniqueName = Date.now() + path.extname(file.originalname);
+        cb(null, uniqueName);
+    },
+});
+
+const upload = multer({storage});
+
 
 app.use("/api/auth", authRouter)
+app.use("/api/analyze",upload.single("file") ,analyzeRouter)
 
 
 // app.use((err, req, res) => {

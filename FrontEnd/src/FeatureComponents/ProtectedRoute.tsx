@@ -15,16 +15,22 @@ const ProtectedRoute = () => {
     const { data, isLoading, isError } = useQuery({
         queryKey: ["authCheck"],
         queryFn: authCheck,
-        retry: false
+        retry: false,
+        refetchOnWindowFocus: false,
+        refetchOnReconnect: false,
+        staleTime:Infinity,
     })
+
 
 
 
     if (isLoading) return <p>Checking authentication...</p>;
 
+    if (isError) return <Navigate to={'/signin'} />
+
     return (
         <>
-            {data?.isLoggedIn || isError ? <Outlet /> : <Navigate to="/signin" replace />}
+            {data?.isLoggedIn ? <Outlet /> : <Navigate to="/signin" replace />}
         </>
     )
 }
