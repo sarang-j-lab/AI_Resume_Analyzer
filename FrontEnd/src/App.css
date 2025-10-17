@@ -70,7 +70,7 @@ form {
   .resume-summary {
     @apply flex flex-row items-center justify-center p-4 gap-4;
     .category {
-      @apply flex flex-row gap-2 items-center bg-gray-50 rounded-2xl p-4 w-full justify-between;
+      @apply flex flex-row  items-center bg-gray-50 rounded-2xl p-2 w-full justify-between;
     }
   }
   .back-button {
@@ -94,11 +94,11 @@ form {
   }
 
   .resume-card-header {
-    @apply flex flex-row gap-2 justify-between min-h-[110px] max-sm:flex-col items-center max-md:justify-center max-md:items-center;
+    @apply flex flex-row gap-2 justify-between min-h-[110px] max-sm:flex-row items-center max-md:justify-center max-md:items-center;
   }
 
   .feedback-section {
-    @apply flex flex-col gap-8 w-1/2 px-8 max-lg:w-full py-6;
+    @apply flex flex-col gap-8 w-full px-8 max-lg:w-full py-6;
   }
 
   .navbar {

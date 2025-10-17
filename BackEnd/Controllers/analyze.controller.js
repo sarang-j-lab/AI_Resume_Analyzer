@@ -1,6 +1,8 @@
 import fs from "fs";
 import axios from "axios";
 import { prepareInstructions } from "../Constant/prompt.js";
+import path from "path";
+import { fromPath } from "pdf2pic";
 
 export const anaylyzeResume = async (req, res) => {
     try {
@@ -19,7 +21,10 @@ export const anaylyzeResume = async (req, res) => {
             return res.status(400).json({ message: "File should be in PDF format!" })
         }
 
-        const binaryFileToBase64Str = convertIntoBase64(file)
+        const binaryFileToBase64Str = convertIntoBase64(file.path)
+
+        fs.unlink(file.path, (err) => { })
+
 
         const prompt = prepareInstructions({ jobTitle, jobDescription });
 
@@ -58,21 +63,33 @@ export const anaylyzeResume = async (req, res) => {
             return res.status(500).json({ message: "Could not retrieve analysis!" });
         }
     } catch (error) {
+        console.log(error)
         return res.status(500).json({ message: "Internal Server Error! please try after some time." });
     }
 }
 
 
 
-function convertIntoBase64(file) {
-    const fileData = fs.readFileSync(file.path);
+function convertIntoBase64(filePath) {
+    const fileData = fs.readFileSync(filePath);
     const base64String = fileData.toString("base64");
-    fs.unlink(file.path, (err) => {
-        if (err) {
-            console.log("failed to delete file")
-        } else {
-            console.log(`${file.path}Temparory file deleted successfully`)
-        }
-    })
     return base64String;
+}
+
+async function convertPdfToImg(filePath) {
+    console.log(filePath)
+    const absolutePath = path.join(process.cwd(), filePath)
+    console.log(absolutePath)
+    const convert = fromPath(absolutePath, {
+        density: 100, // image quality
+        saveFilename: "converted",
+        savePath: "./output",
+        format: "png",
+        width: 800,
+        height: 1000,
+    })
+    const result = await convert(1, { responseType: "base64" });
+
+
+    return `data:image/png;base64,${result.base64}`;
 }

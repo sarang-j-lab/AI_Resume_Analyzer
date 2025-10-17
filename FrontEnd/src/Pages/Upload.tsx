@@ -5,13 +5,13 @@ import axios from 'axios';
 import { useMutation } from '@tanstack/react-query';
 import TextLoader from '../ReuseableComponents/TextLoader';
 import ResumeUploadForm from '../FeatureComponents/ResumeUploadForm';
+import { useNavigate } from 'react-router-dom';
 
 const API_URL = import.meta.env.VITE_API_URL;
 
 const Upload = () => {
   const [file, setFile] = useState<File | null>(null)
-  const [feedback, setFeedback] = useState<string | null>(null);
-
+  const navigate = useNavigate()
 
   const postResume = async (formData: FormData) => {
     const response = await axios.post(`${API_URL}/api/analyze/analyze-resume`, formData, {
@@ -27,7 +27,7 @@ const Upload = () => {
     mutationKey: ['postResume'],
     mutationFn: postResume,
     onSuccess: (data) => {
-      setFeedback(data?.data?.content);
+      navigate("/feedback", { state: { content: JSON.parse(data?.data?.content)} })
       toast.success("success analyzed")
     },
     onError: (error) => {
@@ -68,7 +68,6 @@ const Upload = () => {
     mutate(formData)
   }
 
-  
 
 
 

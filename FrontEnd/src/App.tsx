@@ -7,6 +7,7 @@ import SignUp from './Pages/SignUp.tsx'
 import ProtectedRoute from './FeatureComponents/ProtectedRoute.tsx'
 import axios from 'axios'
 import Upload from './Pages/Upload.tsx'
+import Feedback from './Pages/Feedback.tsx'
 axios.defaults.withCredentials = true;
 
 
@@ -20,6 +21,7 @@ function App(): ReactElement {
         <Route element={<ProtectedRoute />}>
           <Route path='/' element={<Home />} />
           <Route path='/upload' element={<Upload />} />
+          <Route path='/feedback' element={<Feedback />} />
         </Route>
       </Routes>
     </>

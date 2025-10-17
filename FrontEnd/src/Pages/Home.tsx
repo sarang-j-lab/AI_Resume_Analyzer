@@ -1,7 +1,7 @@
 import React from 'react'
 import Navbar from '../ReuseableComponents/Navbar'
-import { resumes } from '../Constants'
-import ResumeCard from '../FeatureComponents/ResumeCard'
+import { resumes } from '../Constants/index.ts'
+import ResumeCard from '../FeatureComponents/ResumeCard.tsx'
 const Home = (): React.ReactElement => {
 
     return (

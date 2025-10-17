@@ -1,9 +1,8 @@
-import { Link } from 'react-router-dom'
-import ScoreCircle from '../ReuseableComponents/ScroreCircle'
+import ScoreCircle from '../FeatureComponents/ScoreCircle.tsx'
 
-const ResumeCard = ({ resume: { id, companyName, jobTitle, feedback ,imagePath} }: { resume: Resume }) => {
+const ResumeCard = ({ resume: { companyName, jobTitle, feedback ,imagePath} }: { resume: Resume }) => {
     return (
-        <Link to={`/resume/${id}`} className='resume-card animate-in fade-in duration-1000'>
+        <section  className='resume-card animate-in fade-in duration-1000'>
             <div className="resume-card-header">
 
                 <div className="flex flex-col gap2">
@@ -19,7 +18,7 @@ const ResumeCard = ({ resume: { id, companyName, jobTitle, feedback ,imagePath} 
                     <img src={imagePath} alt='resume' className='w-full h-[350px] max-s:h-[200px] object-cover object-top'/>
                 </div>
             </div>
-        </Link>
+        </section>
     )
 }
 
