@@ -16,13 +16,16 @@ const app = express();
 app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(cors({
-    origin: ["http://localhost:5173", "http://localhost:5174"],
+    origin: ["http://localhost:5173", "http://localhost:5174","https://airesumeanalyzer-mu.vercel.app"],
     credentials: true
 }))
+
+app.set('trust proxy', 1);
 
 app.get("/", (req, res) => {
     return res.send("hello world")
 })
+
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
@@ -54,10 +57,10 @@ const upload = multer({
 app.use("/api/auth", authRouter)
 app.use("/api/analyze", upload.single("file"), analyzeRouter)
 
-app.use((err,req,res,next)=>{
+app.use((err, req, res, next) => {
     const statusCode = err.statusCode || 500;
     const message = err.message || "Something went wrong";
-    return res.status(statusCode).json({message:message});
+    return res.status(statusCode).json({ message: message });
 })
 
 

@@ -10,6 +10,7 @@ const SignUp = lazy(() => import('./Pages/SignUp'));
 const Upload = lazy(() => import('./Pages/Upload'));
 const Feedback = lazy(() => import('./Pages/Feedback'));
 const Home = lazy(() => import('./Pages/Home'));
+const NotFound = lazy(() => import('./ReuseableComponents/NotFound.tsx'));
 
 function App(): ReactElement {
 
@@ -19,11 +20,12 @@ function App(): ReactElement {
         <Routes>
           <Route path='/signin' element={<SignIn />} />
           <Route path='/signup' element={<SignUp />} />
-          <Route element={<ProtectedRoute />}>
-            <Route index element={<Home />} />
+          <Route path='/' element={<ProtectedRoute />}>
+            <Route path='/' element={<Home />} />
             <Route path='/upload' element={<Upload />} />
             <Route path='/feedback' element={<Feedback />} />
           </Route>
+          <Route path='*' element={<NotFound />} />
         </Routes>
       </Suspense>
     </>
