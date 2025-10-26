@@ -36,7 +36,7 @@ const SignIn = () => {
     mutationFn: postUserData,
     onSuccess: () => {
       toast.success("User Logged In Successfully!")
-      navigate("/")
+      return navigate("/")
     },
     onError: (error) => {
       if (axios.isAxiosError(error)) {
