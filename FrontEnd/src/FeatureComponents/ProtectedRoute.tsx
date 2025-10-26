@@ -6,23 +6,22 @@ const API_URL = import.meta.env.VITE_API_URL
 
 const ProtectedRoute = () => {
 
+    // const data = {isLoggedIn:true};
     async function authCheck() {
         const res = await axios.get(`${API_URL}/api/auth/auth-check`, { withCredentials: true });
         return res.data;
     }
 
 
-    const { data, isLoading, isError } = useQuery({
+    const { data, isPending:isLoading, isError, } = useQuery({
         queryKey: ["authCheck"],
         queryFn: authCheck,
-        retry: false,
         refetchOnWindowFocus: false,
+        refetchOnMount: false,
         refetchOnReconnect: false,
-        staleTime:Infinity,
+        retryOnMount: false,
+        retry:false,
     })
-
-
-
 
     if (isLoading) return <p>Checking authentication...</p>;
 

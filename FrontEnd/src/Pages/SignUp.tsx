@@ -4,6 +4,9 @@ import axios from 'axios';
 import toast, { Toaster } from 'react-hot-toast';
 import { useMutation } from '@tanstack/react-query';
 import { Link, useNavigate } from 'react-router-dom';
+import useDisableContext from '../Context/ButtonDisableContext/UseDisableContext';
+
+const API_URL = import.meta.env.VITE_API_URL;
 
 interface UserData {
     name: string,
@@ -14,6 +17,7 @@ interface UserData {
 const SignUp = () => {
     const [userData, setUserData] = useState<UserData>({ name: "", email: "", password: "" });
     const navigate = useNavigate();
+    const { disable, disableButton } = useDisableContext();
 
     function inputChange(eve: React.ChangeEvent<HTMLInputElement>): void {
         const { name, value } = eve.target;
@@ -25,7 +29,7 @@ const SignUp = () => {
             throw new Error("Password must be greather than 6 charactors")
         }
 
-        const response = await axios.post("http://localhost:5000/api/auth/signup", userData, { withCredentials: true })
+        const response = await axios.post(`${API_URL}/api/auth/signup`, userData, { withCredentials: true })
         return response;
     }
 
@@ -51,8 +55,9 @@ const SignUp = () => {
         }
     })
 
-    const handleSubmit = (eve: FormEvent):void => {
+    const handleSubmit = (eve: FormEvent): void => {
         eve.preventDefault();
+        disableButton()
         mutate(userData)
     }
 
@@ -69,17 +74,9 @@ const SignUp = () => {
                         <Input type='email' name='email' value={userData?.email} placeholder='Email' onChange={inputChange} />
                         <Input type='password' name='password' value={userData?.password} placeholder='Password' onChange={inputChange} />
                         <div>
-                            {isLoading ? <>
-                                <button className='auth-button animated-pulse'>
-                                    <p>Signing you up...</p>
-                                </button>
-                            </>
-                                :
-                                <>
-                                    <button className='auth-button animated-pulse'>
-                                        <p>Sign-Up</p>
-                                    </button>
-                                </>}
+                            <button disabled={disable} className='auth-button animated-pulse'>
+                                <p>{isLoading ? "Signing you up..." : "Sign-Up"}</p>
+                            </button>
                         </div>
                     </form>
                     <div>Already have an account! <Link to={'/signin'} className='text-blue-500'> Sign-in here</Link></div>

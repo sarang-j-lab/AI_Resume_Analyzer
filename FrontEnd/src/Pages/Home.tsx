@@ -3,7 +3,6 @@ import Navbar from '../ReuseableComponents/Navbar'
 import { resumes } from '../Constants/index.ts'
 import ResumeCard from '../FeatureComponents/ResumeCard.tsx'
 const Home = (): React.ReactElement => {
-
     return (
         <main className="bg-[url('/images/bg-main.svg')]">
 

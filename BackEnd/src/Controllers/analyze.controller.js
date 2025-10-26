@@ -1,8 +1,8 @@
 import fs from "fs";
 import axios from "axios";
 import { prepareInstructions } from "../Constant/prompt.js";
-import path from "path";
-import { fromPath } from "pdf2pic";
+
+
 
 export const anaylyzeResume = async (req, res) => {
     try {
@@ -69,27 +69,9 @@ export const anaylyzeResume = async (req, res) => {
 }
 
 
-
 function convertIntoBase64(filePath) {
     const fileData = fs.readFileSync(filePath);
     const base64String = fileData.toString("base64");
     return base64String;
 }
 
-async function convertPdfToImg(filePath) {
-    console.log(filePath)
-    const absolutePath = path.join(process.cwd(), filePath)
-    console.log(absolutePath)
-    const convert = fromPath(absolutePath, {
-        density: 100, // image quality
-        saveFilename: "converted",
-        savePath: "./output",
-        format: "png",
-        width: 800,
-        height: 1000,
-    })
-    const result = await convert(1, { responseType: "base64" });
-
-
-    return `data:image/png;base64,${result.base64}`;
-}

@@ -1,38 +1,67 @@
 import { useState, type FormEvent, } from 'react'
-import Navbar from '../ReuseableComponents/Navbar'
 import toast from 'react-hot-toast';
 import axios from 'axios';
+import {  useNavigate } from 'react-router-dom';
 import { useMutation } from '@tanstack/react-query';
+
+import Navbar from '../ReuseableComponents/Navbar'
 import TextLoader from '../ReuseableComponents/TextLoader';
 import ResumeUploadForm from '../FeatureComponents/ResumeUploadForm';
-import { useNavigate } from 'react-router-dom';
+
+import useResumeContext from '../Context/FeedbackContext/useResumeFeedbackContext.tsx';
+import useDisableContext from '../Context/ButtonDisableContext/UseDisableContext.tsx';
 
 const API_URL = import.meta.env.VITE_API_URL;
 
+interface ResumeDetails {
+  companyName: string,
+  jobTitle: string
+}
+
+interface ApiResponse {
+  content: string
+}
+
 const Upload = () => {
   const [file, setFile] = useState<File | null>(null)
+  const [resumeDetails, setResumeDetails] = useState<ResumeDetails>({ companyName: "", jobTitle: "" });
   const navigate = useNavigate()
 
+  const {disableButton} = useDisableContext();
+
+  const { setFeedback } = useResumeContext();
+
   const postResume = async (formData: FormData) => {
-    const response = await axios.post(`${API_URL}/api/analyze/analyze-resume`, formData, {
+    const { data } = await axios.post<ApiResponse>(`${API_URL}/api/analyze/analyze-resume`, formData, {
       headers: {
         "Content-Type": "multipart/form-data"
       },
       withCredentials: true
     });
-    return response;
+    return data;
   }
+
+
 
   const { mutate, isPending } = useMutation({
     mutationKey: ['postResume'],
     mutationFn: postResume,
     onSuccess: (data) => {
-      navigate("/feedback", { state: { content: JSON.parse(data?.data?.content)} })
-      toast.success("success analyzed")
+      try {
+        const parseFeedback = JSON.parse(data.content)
+        setFeedback(parseFeedback);
+        toast.success("success analyzed")
+        navigate("/feedback")
+      } catch (error: unknown) {
+        if (error instanceof Error) {
+          toast.error(error.message || 'Invalid response format from server.');
+        }
+        toast.error('Invalid response format from server.');
+      }
     },
-    onError: (error) => {
+    onError: (error: unknown) => {
       if (axios.isAxiosError(error)) {
-        toast.error(error?.response?.data?.message || "failed to analyzed")
+        toast.error(error.response?.data?.message || error.response?.data || "failed to analyze the resume")
       } else {
         toast.error("Something went wrong please try again!")
       }
@@ -41,29 +70,23 @@ const Upload = () => {
 
   const handleSubmit = async (eve: FormEvent<HTMLFormElement>) => {
     eve.preventDefault();
+    if (!file) return toast.error("Attache a resume file.")
+
     const form: HTMLFormElement | null = eve.currentTarget.closest("form");
     if (!form) return;
-    if (!file) {
-      toast.error("Attache File")
-      return;
-    }
 
     const formData = new FormData(form);
-
-    const companyName = formData.get("company-name") as string;
-    const jobTitle = formData.get("job-title") as string;
     const jobDescription = formData.get("job-description") as string;
 
-    if (!companyName || !jobTitle || !jobDescription) {
-      toast.error("Fill all the information properly!")
-      return;
-    }
+    if (!jobDescription) return toast.error('Please provide a job description.');
+    if (!resumeDetails.companyName || !resumeDetails.jobTitle) return toast.error("Fill all the information properly!")
 
-    formData.append("companyName", companyName)
-    formData.append("jobTitle", jobTitle)
+    formData.append("companyName", resumeDetails.companyName)
+    formData.append("jobTitle", resumeDetails.jobTitle)
     formData.append("jobDescription", jobDescription)
     formData.append("file", file)
 
+    disableButton();
 
     mutate(formData)
   }
@@ -76,13 +99,15 @@ const Upload = () => {
     <main className="bg-[url('/images/bg-main.svg')] bg-cover">
       <Navbar />
 
-      <section className='main-section'>
+      <section className='main-section '>
         <div className='page-heading'>
           <h1>Smart feedback for your dream</h1>
+
           {!isPending ? (
             <>
               <h2>Drop your resume for an ATS score and improvement!</h2>
-              <ResumeUploadForm file={file} setFile={setFile} handleSubmit={handleSubmit} />
+
+              <ResumeUploadForm file={file} setFile={setFile} setResumeDetails={setResumeDetails} handleSubmit={handleSubmit} />
             </>
           ) : (
             <>

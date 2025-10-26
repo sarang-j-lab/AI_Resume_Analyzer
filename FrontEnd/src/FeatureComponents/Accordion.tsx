@@ -27,19 +27,13 @@ interface AccordionProps {
 
 
 // this is an main accordian wrapper which wraps all accordian items  with AccordianContext
-export const Accordion: React.FC<AccordionProps> = ({ children, defaultOpen, allowMultiple = false, }) => {
+export const Accordion: React.FC<AccordionProps> = ({ children, defaultOpen }) => {
 
     const [activeItems, setActiveItems] = useState<string[]>(defaultOpen ? [defaultOpen] : []);
 
     const toggleItem = (id: string) => {
         setActiveItems((prev) => {
-            if (allowMultiple) {
-                return prev.includes(id)
-                    ? prev.filter((item) => item !== id)
-                    : [...prev, id];
-            } else {
-                return prev.includes(id) ? [] : [id];
-            }
+            return prev.includes(id) ? [] : [id];
         });
     };
 
@@ -63,7 +57,7 @@ export const AccordionItem: React.FC<AccordionItemProps> = ({
     className = "",
 }) => {
     return (
-        <div  className={`overflow-hidden border-b border-gray-200 ${className}`}>
+        <div className={`overflow-hidden border-b border-gray-200 ${className}`}>
             {children}
         </div>
     );
