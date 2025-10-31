@@ -3,7 +3,7 @@ import Input from '../ReuseableComponents/Input';
 import axios from 'axios';
 import toast, { Toaster } from 'react-hot-toast';
 import { useMutation } from '@tanstack/react-query';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, Navigate, useNavigate } from 'react-router-dom';
 import useDisableContext from '../Context/ButtonDisableContext/UseDisableContext';
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -14,7 +14,7 @@ interface UserData {
 
 const SignIn = () => {
   const [userData, setUserData] = useState<UserData>({ email: "", password: "" });
-  const {disable, disableButton} = useDisableContext();
+  const { disable, disableButton } = useDisableContext();
   const navigate = useNavigate();
 
   function inputChange(eve: React.ChangeEvent<HTMLInputElement>): void {
@@ -31,23 +31,20 @@ const SignIn = () => {
   }
 
 
-  const { isPending: isLoading, mutate } = useMutation({
+  const { isPending: isLoading, mutate, isSuccess } = useMutation({
     mutationKey: ["signIn"],
     mutationFn: postUserData,
     onSuccess: () => {
       toast.success("User Logged In Successfully!")
-      return navigate("/")
+      navigate("/")
     },
     onError: (error) => {
-      if (axios.isAxiosError(error)) {
-        toast.error(error?.response?.data?.message || error?.message || "Something went wrong! please try again.")
-      } else if (error instanceof Error) {
-        toast.error(error?.message)
-      } else {
-        toast.error("Something went wrong! please try again.")
-      }
+      const errorMessage = axios.isAxiosError(error) ? error?.response?.data?.message : error?.message || "Something went wrong! please try again.";
+      toast.error(errorMessage);
     }
   })
+
+
 
   function handleSubmit(eve: FormEvent): void {
     eve.preventDefault();
@@ -55,31 +52,35 @@ const SignIn = () => {
     mutate(userData)
   }
 
-  return (
-    <main className="bg-[url('/images/bg-auth.svg')] bg-cover min-h-screen flex items-center justify-center">
-      <div className='gradient-border shadow-lg'>
-        <section className='flex flex-col gap-8 bg-white rounded-2xl p-10'>
-          <div className='flex flex-col items-center gap-2 text-center'>
-            <h1>Welcome Back</h1>
-            <h2>Log in to continue you job journey</h2>
-          </div>
-          <form onSubmit={handleSubmit} className='flex justify-center items-center '>
-            <Input type='email' name='email' value={userData?.email} placeholder='Email' onChange={inputChange} />
-            <Input type='password' name='password' value={userData?.password} placeholder='Password' onChange={inputChange} />
-            <div>
+  if (isSuccess) {
+    return <Navigate to={"/"}/>
+  }
 
-              <button disabled={disable} className='auth-button animated-pulse'>
-                <p>{isLoading ? "Signing you in..." : "Sign-In"}</p>
-              </button>
+      return (
+      <main className="bg-[url('/images/bg-auth.svg')] bg-cover min-h-screen flex items-center justify-center">
+        <div className='gradient-border shadow-lg'>
+          <section className='flex flex-col gap-8 bg-white rounded-2xl p-10'>
+            <div className='flex flex-col items-center gap-2 text-center'>
+              <h1>Welcome Back</h1>
+              <h2>Log in to continue you job journey</h2>
+            </div>
+            <form onSubmit={handleSubmit} className='flex justify-center items-center '>
+              <Input type='email' name='email' value={userData?.email} placeholder='Email' onChange={inputChange} />
+              <Input type='password' name='password' value={userData?.password} placeholder='Password' onChange={inputChange} />
+              <div>
 
-            </div >
-          </form>
-          <div>Does'nt have an Account! <Link to={'/signup'} className='text-blue-500'> Sign-Up here</Link></div>
-        </section>
-      </div>
-      <Toaster />
-    </main>
-  )
+                <button disabled={disable} className='auth-button animated-pulse'>
+                  <p>{isLoading ? "Signing you in..." : "Sign-In"}</p>
+                </button>
+
+              </div >
+            </form>
+            <div>Does'nt have an Account! <Link to={'/signup'} className='text-blue-500'> Sign-Up here</Link></div>
+          </section>
+        </div>
+        <Toaster />
+      </main>
+      )
 }
 
-export default SignIn
+      export default SignIn

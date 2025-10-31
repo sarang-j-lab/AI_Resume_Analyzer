@@ -7,17 +7,9 @@ const Feedback = () => {
 
   const { feedback } = useResumeContext();
 
-
-
-
-
-
   if (!feedback) {
     return <Navigate to={'/upload'} />
   }
-
-
-
   return (
     <main className="!pt-0">
       <nav className="resume-nav  sticky top-0 z-10 bg-white ">

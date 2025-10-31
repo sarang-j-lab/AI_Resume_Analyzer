@@ -2,8 +2,8 @@ import React, { useState, type FormEvent } from 'react'
 import Input from '../ReuseableComponents/Input';
 import axios from 'axios';
 import toast, { Toaster } from 'react-hot-toast';
-import { useMutation } from '@tanstack/react-query';
-import { Link, useNavigate } from 'react-router-dom';
+import { useMutation} from '@tanstack/react-query';
+import { Link, Navigate, useNavigate } from 'react-router-dom';
 import useDisableContext from '../Context/ButtonDisableContext/UseDisableContext';
 
 const API_URL = import.meta.env.VITE_API_URL;
@@ -28,13 +28,12 @@ const SignUp = () => {
         if (userData?.password.length < 6) {
             throw new Error("Password must be greather than 6 charactors")
         }
-
         const response = await axios.post(`${API_URL}/api/auth/signup`, userData, { withCredentials: true })
         return response;
     }
 
 
-    const { isPending: isLoading, mutate } = useMutation({
+    const { isPending: isLoading, mutate, isSuccess } = useMutation({
         mutationKey: ["signUp"],
         mutationFn: postUserData,
         onSuccess: () => {
@@ -42,13 +41,8 @@ const SignUp = () => {
             navigate("/")
         },
         onError: (error) => {
-            if (axios.isAxiosError(error)) {
-                toast.error(error?.response?.data?.message || error?.message || "Something went wrong! please try again.")
-            } else if (error instanceof Error) {
-                toast.error(error?.message)
-            } else {
-                toast.error("Something went wrong! please try again.")
-            }
+            const errMessage = axios.isAxiosError(error) ? error?.response?.data?.message : error?.message || "Something went wrong! please try again.";
+            toast.error(errMessage);
         },
         onSettled: () => {
             setUserData({ name: "", email: "", password: "" })
@@ -61,13 +55,20 @@ const SignUp = () => {
         mutate(userData)
     }
 
+
+
+    if (isSuccess) {
+        return <Navigate to={"/"} />
+    }
+
+
     return (
         <main className="bg-[url('/images/bg-auth.svg')] bg-cover min-h-screen flex items-center justify-center">
             <div className='gradient-border shadow-lg'>
                 <section className='flex flex-col gap-8 bg-white rounded-2xl p-10'>
                     <div className='flex flex-col items-center gap-2 text-center'>
                         <h1>Welcome</h1>
-                        <h2>Log in to continue you job journey</h2>
+                        <h2>Sign up to continue you job journey</h2>
                     </div>
                     <form onSubmit={handleSubmit} className='flex justify-center items-center '>
                         <Input type='text' name='name' value={userData?.name} placeholder='Username' onChange={inputChange} />
