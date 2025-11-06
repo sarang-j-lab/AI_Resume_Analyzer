@@ -3,7 +3,7 @@ import Input from '../ReuseableComponents/Input';
 import axios from 'axios';
 import toast, { Toaster } from 'react-hot-toast';
 import { useMutation } from '@tanstack/react-query';
-import { Link, Navigate, useNavigate } from 'react-router-dom';
+import { Link,  useNavigate } from 'react-router-dom';
 import useDisableContext from '../Context/ButtonDisableContext/UseDisableContext';
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -31,7 +31,7 @@ const SignIn = () => {
   }
 
 
-  const { isPending: isLoading, mutate, isSuccess } = useMutation({
+  const { isPending: isLoading, mutate} = useMutation({
     mutationKey: ["signIn"],
     mutationFn: postUserData,
     onSuccess: () => {
