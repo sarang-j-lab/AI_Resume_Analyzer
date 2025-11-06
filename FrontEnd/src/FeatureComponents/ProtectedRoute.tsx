@@ -17,9 +17,9 @@ const ProtectedRoute = () => {
         queryKey: ["authCheck"],
         queryFn: authCheck,
         refetchOnWindowFocus: false,
-        refetchOnMount: false,
-        refetchOnReconnect: false,
-        retryOnMount: false,
+        refetchOnMount: true,
+        refetchOnReconnect: true,
+        retryOnMount: true,
         retry:false,
     })
 

@@ -52,9 +52,7 @@ const SignIn = () => {
     mutate(userData)
   }
 
-  if (isSuccess) {
-    return <Navigate to={"/"}/>
-  }
+  
 
       return (
       <main className="bg-[url('/images/bg-auth.svg')] bg-cover min-h-screen flex items-center justify-center">

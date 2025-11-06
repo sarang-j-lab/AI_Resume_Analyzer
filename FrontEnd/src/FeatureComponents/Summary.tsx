@@ -24,7 +24,7 @@ const Category = ({ title, score }: { title: string, score: number }) => {
 
 const Summary = ({ feedback }: { feedback: Feedback }) => {
     return (
-        <div className="bg-white rounded-2xl shadow-md w-full">
+        <div className="bg-white rounded-2xl shadow-md w-full ">
             <div className="flex items-center">
                 <ScoreCircle score={feedback.ATS.score} />
                 <div className="flex flex-col gap-4">

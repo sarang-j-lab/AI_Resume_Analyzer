@@ -1,7 +1,7 @@
 import { useState, type FormEvent, } from 'react'
 import toast from 'react-hot-toast';
 import axios from 'axios';
-import {  useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useMutation } from '@tanstack/react-query';
 
 import Navbar from '../ReuseableComponents/Navbar'
@@ -27,7 +27,7 @@ const Upload = () => {
   const [resumeDetails, setResumeDetails] = useState<ResumeDetails>({ companyName: "", jobTitle: "" });
   const navigate = useNavigate()
 
-  const {disableButton} = useDisableContext();
+  const { disableButton } = useDisableContext();
 
   const { setFeedback } = useResumeContext();
 
@@ -38,6 +38,7 @@ const Upload = () => {
       },
       withCredentials: true
     });
+
     return data;
   }
 
@@ -50,6 +51,7 @@ const Upload = () => {
       try {
         const parseFeedback = JSON.parse(data.content)
         setFeedback(parseFeedback);
+        console.log(parseFeedback)
         toast.success("success analyzed")
         navigate("/feedback")
       } catch (error: unknown) {
