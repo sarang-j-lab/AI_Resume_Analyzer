@@ -16,7 +16,7 @@ const app = express();
 app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(cors({
-    origin: ["http://localhost:5173", "http://localhost:5174","https://airesumeanalyzer-mu.vercel.app"],
+    origin: [process.env.LOCALHOST_FRONTEND_URL,process.env.FRONEND_URL],
     credentials: true
 }))
 

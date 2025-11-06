@@ -17,16 +17,12 @@ export const anaylyzeResume = async (req, res) => {
             return res.status(400).json({ message: 'Please fill the details!' })
         }
 
-        if (!file.mimetype.includes("pdf")) {
-            return res.status(400).json({ message: "File should be in PDF format!" })
-        }
-
         const binaryFileToBase64Str = convertIntoBase64(file.path)
 
         fs.unlink(file.path, (err) => { })
 
 
-        const prompt = prepareInstructions({ jobTitle, jobDescription });
+        const prompt = prepareInstructions({ jobTitle, jobDescription, companyName });
 
         const payload = {
             contents: [{
@@ -57,6 +53,8 @@ export const anaylyzeResume = async (req, res) => {
         const candidate = response.data?.candidates?.[0];
         if (candidate && candidate.content?.parts?.[0]?.text) {
             const analysisText = candidate.content.parts[0].text;
+
+            console.log(analysisText);
 
             return res.status(200).json({ message: "successfull", content: analysisText })
         } else {
