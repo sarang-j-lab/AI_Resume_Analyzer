@@ -7,14 +7,22 @@ interface Resume {
   feedback: Feedback;
 }
 
-interface Tip{
+interface Tip {
   type: "good" | "improve",
-  tip:string, //give 3-4 tips, //make it a short "title" for the actual explanation
+  tip: string, //give 3-4 tips, //make it a short "title" for the actual explanation
   explanation?: string //explain in detail here
 }
 
 interface Feedback {
   overallScore: number; //max 100
+  companyOverview: {
+    name: string;
+    summary: string; // 2-4 lines about the company
+    industry: string;
+    foundedYear?: number;
+    headquarters?: string;
+    keyPoints: string[]; // 3-5 bullet points about company reputation, culture, products
+  };
   ATS: {
     score: number; //rate based on ATS suitability
     tips: Tip[];

@@ -54,8 +54,6 @@ export const anaylyzeResume = async (req, res) => {
         if (candidate && candidate.content?.parts?.[0]?.text) {
             const analysisText = candidate.content.parts[0].text;
 
-            console.log(analysisText);
-
             return res.status(200).json({ message: "successfull", content: analysisText })
         } else {
             return res.status(500).json({ message: "Could not retrieve analysis!" });

@@ -51,7 +51,6 @@ const Upload = () => {
       try {
         const parseFeedback = JSON.parse(data.content)
         setFeedback(parseFeedback);
-        console.log(parseFeedback)
         toast.success("success analyzed")
         navigate("/feedback")
       } catch (error: unknown) {

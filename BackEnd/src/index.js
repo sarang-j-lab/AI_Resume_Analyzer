@@ -8,15 +8,16 @@ import cookieParser from 'cookie-parser';
 import analyzeRouter from "./Routes/analyze.route.js"
 import multer from 'multer';
 import path from 'path'
+dotenv.config();
+
 const PORT = process.env.PORT || 5000;
 
-dotenv.config();
 const app = express();
 
 app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(cors({
-    origin: [process.env.LOCALHOST_FRONTEND_URL,process.env.FRONEND_URL],
+    origin: [process.env.LOCALHOST_FRONTEND_URL, process.env.FRONEND_URL],
     credentials: true
 }))
 

@@ -36,9 +36,11 @@ const SignIn = () => {
     mutationFn: postUserData,
     onSuccess: () => {
       toast.success("User Logged In Successfully!")
+      setUserData({ email: "", password: "" });
       navigate("/")
     },
     onError: (error) => {
+      setUserData({ email: "", password: "" });
       const errorMessage = axios.isAxiosError(error) ? error?.response?.data?.message : error?.message || "Something went wrong! please try again.";
       toast.error(errorMessage);
     }

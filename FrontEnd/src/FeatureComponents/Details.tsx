@@ -25,6 +25,31 @@ const CategoryHeader = ({ title, categoryScore }: { title: string; categoryScore
     );
 };
 
+interface ComapanyOverviewProps {
+    name: string;
+    summary: string;
+    industry: string;
+    foundedYear?: number;
+    headquarters?: string;
+    keyPoints: string[];
+}
+
+const ComapanyOverview = ({ companyOverview }: { companyOverview: ComapanyOverviewProps }) => {
+    return (
+        <div className="w-full flex flex-col gap-2">
+            <h2><span className="font-bold">{companyOverview.name}</span></h2>
+            <p>Industry: <span className="font-bold">{companyOverview.industry}</span></p>
+            <p>{companyOverview.summary}</p>
+            <label htmlFor="keypoints">key Points</label>
+            <ul className="list-disc pl-5" id="keypoints">{
+                companyOverview.keyPoints.map((points) => (
+                    <li key={points}>{points}</li>
+                ))
+            }</ul>
+        </div>
+    )
+}
+
 const CategoryContent = ({ tips }: { tips: Tip[] }) => {
     return (
         <div className="flex flex-col gap-4 items-center w-full">
@@ -114,6 +139,16 @@ const Details = ({ feedback }: { feedback: Feedback }) => {
                     </AccordionHeader>
                     <AccordionContent itemId="skills">
                         <CategoryContent tips={feedback.skills.tips} />
+                    </AccordionContent>
+                </AccordionItem>
+                <AccordionItem id="companyOverview">
+                    <AccordionHeader itemId="companyOverview">
+                        <div className="flex flex-row gap-4 items-center py-2">
+                            <p className="text-xl font-semibold">Company Overview</p>
+                        </div>
+                    </AccordionHeader>
+                    <AccordionContent itemId="companyOverview">
+                        <ComapanyOverview companyOverview={feedback.companyOverview} />
                     </AccordionContent>
                 </AccordionItem>
             </Accordion>
