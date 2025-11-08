@@ -19,8 +19,6 @@ interface Feedback {
     name: string;
     summary: string; // 2-4 lines about the company
     industry: string;
-    foundedYear?: number;
-    headquarters?: string;
     keyPoints: string[]; // 3-5 bullet points about company reputation, culture, products
   };
   ATS: {
