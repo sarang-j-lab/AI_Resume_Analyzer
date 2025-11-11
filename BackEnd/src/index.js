@@ -8,6 +8,7 @@ import cookieParser from 'cookie-parser';
 import analyzeRouter from "./Routes/analyze.route.js"
 import multer from 'multer';
 import path from 'path'
+import compression from "compression";
 dotenv.config();
 
 const PORT = process.env.PORT || 5000;
@@ -17,9 +18,13 @@ const app = express();
 app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(cors({
-    origin: [process.env.LOCALHOST_FRONTEND_URL, process.env.FRONEND_URL],
+    origin: [process.env.LOCALHOST_FRONTEND_URL, 'http://localhost:4173', process.env.FRONEND_URL],
     credentials: true
 }))
+
+app.use(compression());
+app.use(express.json({ limit: "20mb" }));
+
 
 app.set('trust proxy', 1);
 

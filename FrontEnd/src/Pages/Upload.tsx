@@ -80,6 +80,8 @@ const Upload = () => {
     const jobDescription = formData.get("job-description") as string;
 
     if (!jobDescription) return toast.error('Please provide a job description.');
+    if (jobDescription.length > 200) return toast.error("Your description should less than 200 letters");
+
     if (!resumeDetails.companyName || !resumeDetails.jobTitle) return toast.error("Fill all the information properly!")
 
     formData.append("companyName", resumeDetails.companyName)

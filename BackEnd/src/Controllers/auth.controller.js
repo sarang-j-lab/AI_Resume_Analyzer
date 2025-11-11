@@ -11,9 +11,9 @@ export const authCheck = async (req, res) => {
     try {
         const decode = jwt.verify(token, process.env.JWT_SECRET)
         return res.status(200).json({ message: "User is Authenticated!", isLoggedIn: true, user: decode })
-    }catch(err){
+    } catch (err) {
         console.log(err)
-        return res.status(401).json({message:"User is UnAuthenticated!",isLoggedIn:false,user:{}})
+        return res.status(401).json({ message: "User is UnAuthenticated!", isLoggedIn: false, user: {} })
     }
 
 }
@@ -81,7 +81,12 @@ export const signup = async (req, res) => {
 
 export const signout = (req, res) => {
     try {
-        res.clearCookie("token");
+        res.clearCookie("token", {
+            httpOnly: true,
+            maxAge: 7 * 24 * 60 * 60 * 1000,
+            sameSite: "None",
+            secure: true
+        });
         res.status(200).json({ message: "User Signout successfully!" })
     } catch (error) {
         req.status(500).json({ message: "Internal error! failed to logout" })

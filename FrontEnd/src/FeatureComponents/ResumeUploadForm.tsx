@@ -43,7 +43,7 @@ const ResumeUploadForm = ({ handleSubmit, setResumeDetails, setFile, file }: For
                 <input type="text" onChange={handleInputChange} name="job-title" id="jobTitle" placeholder='Job title' required />
             </div>
             <div className='form-div'>
-                <label htmlFor="job-description">Job description</label>
+                <label htmlFor="job-description">Job description (Under 200 letters)</label>
                 <textarea rows={5} name="job-description" id="jobDescription" placeholder='Job Description' required></textarea>
             </div>
             <div className='form-div'>
