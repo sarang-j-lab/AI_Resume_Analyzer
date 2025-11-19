@@ -59,6 +59,11 @@ export const prepareInstructions = ({ jobTitle, jobDescription, companyName }) =
               6. Be thorough and detailed. Don't be afraid to point out any mistakes or areas for improvement.
               7. If there is a lot to improve, don't hesitate to give low scores. This is to help the user to improve their resume.
               
+              Output Rules:
+              - The response must strictly follow this TypeScript interface: ${AIResponseFormat}
+              - Return ONLY the JSON object.
+              - No markdown, no backticks, no explanation outside JSON.
+              
               Company Overview Requirements:
               - Provide a factual, concise, and professional summary.
               - Include what the company does, industry, reputation, and notable highlights.
@@ -68,12 +73,7 @@ export const prepareInstructions = ({ jobTitle, jobDescription, companyName }) =
               Insert the company overview in the "companyOverview" section of the JSON output.
 
               Job Title: ${jobTitle}
-              Job Description: ${jobDescription}
-
-              Output Rules:
-              - The response must strictly follow this TypeScript interface: ${AIResponseFormat}
-              - Return ONLY the JSON object.
-              - No markdown, no backticks, no explanation outside JSON.`;
+              Job Description: ${jobDescription};`
 
 }
 

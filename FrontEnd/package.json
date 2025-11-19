@@ -15,6 +15,7 @@
     "axios": "^1.12.2",
     "clsx": "^2.1.1",
     "flowbite-react": "^0.12.9",
+    "json5": "^2.2.3",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
     "react-hot-toast": "^2.6.0",

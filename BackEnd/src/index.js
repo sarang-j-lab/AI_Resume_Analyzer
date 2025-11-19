@@ -9,6 +9,7 @@ import analyzeRouter from "./Routes/analyze.route.js"
 import multer from 'multer';
 import path from 'path'
 import compression from "compression";
+import { error } from 'console';
 dotenv.config();
 
 const PORT = process.env.PORT || 5000;
@@ -65,7 +66,10 @@ app.use("/api/analyze", upload.single("file"), analyzeRouter)
 
 app.use((err, req, res, next) => {
     const statusCode = err.statusCode || 500;
-    const message = err.message || "Something went wrong";
+    const message = err.message || "Internal error! failed to logout";
+
+    console.log(error.message);
+
     return res.status(statusCode).json({ message: message });
 })
 

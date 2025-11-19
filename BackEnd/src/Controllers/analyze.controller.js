@@ -4,7 +4,7 @@ import { prepareInstructions } from "../Constant/prompt.js";
 
 
 
-export const anaylyzeResume = async (req, res) => {
+export const anaylyzeResume = async (req, res, next) => {
     try {
         const { companyName, jobTitle, jobDescription } = req.body;
         const file = req.file;
@@ -60,7 +60,7 @@ export const anaylyzeResume = async (req, res) => {
         }
     } catch (error) {
         console.log(error)
-        return res.status(500).json({ message: "Internal Server Error! please try after some time." });
+        next(error);
     }
 }
 

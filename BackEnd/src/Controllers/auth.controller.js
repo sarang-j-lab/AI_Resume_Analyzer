@@ -45,11 +45,10 @@ export const signin = async (req, res) => {
         })
         return res.status(200).json(user);
     } catch (error) {
-        console.log(error)
-        res.status(500).json({ message: "Login error please try again!" })
+        next(error)
     }
 }
-export const signup = async (req, res) => {
+export const signup = async (req, res, next) => {
     try {
         const { name, email, password } = req.body;
 
@@ -74,12 +73,12 @@ export const signup = async (req, res) => {
         })
         return res.status(201).json(user);
     } catch (error) {
-        console.log(error.message)
-        return res.status(500).json({ message: "Sign-up error" })
+        error.message = "Sign-up error"
+        next(error);
     }
 }
 
-export const signout = (req, res) => {
+export const signout = (req, res, next) => {
     try {
         res.clearCookie("token", {
             httpOnly: true,
@@ -89,6 +88,7 @@ export const signout = (req, res) => {
         });
         res.status(200).json({ message: "User Signout successfully!" })
     } catch (error) {
-        req.status(500).json({ message: "Internal error! failed to logout" })
+        error.message = "Internal error! failed to logout"
+        next(error);
     }
 }

@@ -3,6 +3,7 @@ import toast from 'react-hot-toast';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { useMutation } from '@tanstack/react-query';
+import JSON5 from "json5";
 
 import Navbar from '../ReuseableComponents/Navbar'
 import TextLoader from '../ReuseableComponents/TextLoader';
@@ -49,7 +50,8 @@ const Upload = () => {
     mutationFn: postResume,
     onSuccess: (data) => {
       try {
-        const parseFeedback = JSON.parse(data.content)
+        const jsonStr = data.content.replace(/```json|```/g, "").trim();
+        const parseFeedback = JSON5.parse(jsonStr)
         setFeedback(parseFeedback);
         toast.success("success analyzed")
         navigate("/feedback")
